@@ -4,6 +4,7 @@ Sistema completo de gestión y análisis de gastos personales desarrollado en Py
 
 **Autor:** Gaspar Ramiro Sebastian  
 **Universidad Católica de Salta** - Programación 2
+**Examen Final**
 
 ---
 
