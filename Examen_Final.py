@@ -4,7 +4,7 @@ Programación 2 - 2ndo Semestre
 TP4
 autor: Gaspar Ramiro Sebastian
 
-Trabajo Final:
+Examen Final:
 Programa: Analisis de Gastos
 '''
 
@@ -973,7 +973,6 @@ def main():
             break
         else:
             print("Error. opcion no valida, por favor, intenta de nuevo.")
-
 
 if __name__ == "__main__":
     main()
