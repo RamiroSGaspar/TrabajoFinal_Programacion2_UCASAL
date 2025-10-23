@@ -74,7 +74,11 @@ def pedir_mes_para_grafico():
 
 # Funciones Graficas
 def grafico_gastos_generales_plot(gastos,meses,años,dias):
-
+    '''
+    permite graficar los gastos generales
+    el usuario elige si quiere ver los gastos por mes, año o años
+    retorna el grafico segun la eleccion del usuario
+    '''
     datos = {} # Diccionario para el manejo de valores para graficar
     
     try: 
@@ -164,7 +168,11 @@ def grafico_gastos_generales_plot(gastos,meses,años,dias):
     except ValueError: print("Error: Se ingreso un dato invalido, vuelve a intentar")
 
 def grafico_gastos_generales_barra(gastos,meses,años,dias):
-    
+    '''
+    permite graficar los gastos generales
+    el usuario elige si quiere ver los gastos por mes, año o años
+    retorna el grafico segun la eleccion del usuario
+    '''
     datos = {}
     
     try:
@@ -241,7 +249,11 @@ def grafico_gastos_generales_barra(gastos,meses,años,dias):
     except ValueError: print("Error: Se ingreso un dato no valido, vuelve a intentar")
     
 def grafico_gastos_por_categoria(gastos, meses, años, categorias, dias):
-    
+    '''
+    permite graficar los gastos por categoria
+    el usuario elige si quiere ver los gastos por mes, año o años
+    retorna el grafico segun la eleccion del usuario
+    '''
     datos = {}
     
     try:
@@ -325,7 +337,11 @@ def grafico_gastos_por_categoria(gastos, meses, años, categorias, dias):
 
 # Funciones de Calculo
 def calculos_generales(gastos,meses,años):
-    
+    '''
+    permite realizar calculos generales sobre todos los gastos
+    el usuario elige el tipo de calculo
+    retorna los resultados segun la eleccion del usuario
+    '''
     lista_gastos = []
     
     print("--CALCULOS GENERALES--")
@@ -395,7 +411,11 @@ def calculos_generales(gastos,meses,años):
     except ValueError: print("Error: Se ingreso un dato no valido, vuelve a intentar")
 
 def calculos_especificos(gastos,meses,años,categorias):
-    
+    '''
+    permite realizar calculos especificos por categoria
+    el usuario elige la categoria y el tipo de calculo
+    retorna los resultados segun la eleccion del usuario
+    '''
     diccionario = {}
     
     print("\n--CALCULOS ESPECIFICOS--")
@@ -488,7 +508,11 @@ def calculos_especificos(gastos,meses,años,categorias):
 
 # CRUD
 def guardar_csv(gastos, dias, meses, años, categorias, descripciones, archivo="GastosMensuales.csv"):
-
+    '''
+    permite guardar los datos en el archivo .csv
+    crea un backup del archivo original antes de guardar los cambios
+    retorna True si se guardo exitosamente, False en caso de error
+    '''
     try:
         # se crea un backup antes de guardar
         if os.path.exists(archivo):  # verifica si el archivo existe
@@ -527,7 +551,9 @@ def guardar_csv(gastos, dias, meses, años, categorias, descripciones, archivo="
         return False
 
 def agregar_gasto(gastos, dias, meses, años, categorias, descripciones):
-    
+    '''
+    permite agregar un nuevo gasto al sistema
+    '''
     # Se guardan datos que pueden cambiar en el tiempo
     año_actual = datetime.now().year
     print("\n--Agregar un nuevo gasto--")
@@ -637,7 +663,11 @@ def agregar_gasto(gastos, dias, meses, años, categorias, descripciones):
         print(f"- Descripción: {descripcion}")
 
 def menu_agregar_gastos(gastos, dias, meses, años, categorias, descripciones):
-    
+    '''
+    permite agregar varios gastos seguidos
+    al finalizar, se pregunta si se quieren guardar los cambios
+    en caso de no guardar, se pide confirmacion clara
+    ''' 
     gastos_agregados = 0
     
     while True:
@@ -668,7 +698,11 @@ def menu_agregar_gastos(gastos, dias, meses, años, categorias, descripciones):
             print("- Cambios descartados")
 
 def eliminar_gasto(gastos, dias, meses, años, categorias, descripciones):
-
+    '''
+    permite eliminar un gasto existente
+    el usuario selecciona el gasto por numero
+    se pide confirmacion antes de eliminar
+    '''
     if len(gastos) == 0:
         print("\nNo hay gastos para eliminar")
         return
@@ -716,7 +750,11 @@ def eliminar_gasto(gastos, dias, meses, años, categorias, descripciones):
     except ValueError: print("Error: Entrada inválida")
 
 def ver_gastos(gastos, dias, meses, años, categorias, descripciones):
-    
+    '''
+    permite ver todos los gastos registrados en el sistema
+    muestra la fecha, categoria, precio y descripcion de cada gasto
+    ademas muestra el total de gastos y la suma total de los mismos
+    '''
     if len(gastos) == 0:
         print("\nNo hay gastos registrados")
         return
@@ -727,6 +765,167 @@ def ver_gastos(gastos, dias, meses, años, categorias, descripciones):
     
     print(f"\nTotal: {len(gastos)} gastos | ${sum(gastos):.2f}")
 
+def modificar_gasto(gastos, dias, meses, años, categorias, descripciones):
+    """
+    Permite modificar un gasto existente.
+    El usuario selecciona el gasto por número y puede cambiar cualquier campo.
+    Presionando ENTER mantiene el valor actual.
+    """
+    
+    # se verifica que hay gastos para modificar
+    if len(gastos) == 0:
+        print("\nNo hay gastos para modificar")
+        return
+    
+    ver_gastos(gastos, dias, meses, años, categorias, descripciones)
+    
+    try:
+        num = int(input("\n¿Qué gasto deseas modificar? (número o 0 para cancelar): "))
+        if num == 0:
+            print("Operación cancelada")
+            return
+        if num < 1 or num > len(gastos):
+            print("Número inválido")
+            return
+        
+        idx = num - 1  # Se converte a índice (las listas empiezan en 0)
+        
+        # Se muestrar los datos actuales del gasto seleccionado
+        print(f"\n--GASTO ACTUAL--")
+        print(f"Fecha: {dias[idx]:02d}/{meses[idx]:02d}/{años[idx]}")
+        print(f"Categoría: {categorias[idx]}")
+        print(f"Precio: ${gastos[idx]:.2f}")
+        print(f"Descripción: {descripciones[idx]}")
+        
+        print("\n--MODIFICAR GASTO--")
+        print("(Presiona ENTER para mantener el valor actual)")
+        
+        # MODIFICAR AÑO
+        año_nuevo = input(f"Nuevo año [{años[idx]}]: ").strip()
+        if año_nuevo != "":  # si el usuario ingreso algo
+            try:
+                año_nuevo = int(año_nuevo)
+                año_actual = datetime.now().year
+                # validar rango de año
+                if año_nuevo < 2000 or año_nuevo > año_actual:
+                    print(f"Año inválido. Se mantiene: {años[idx]}")
+                    año_nuevo = años[idx]
+            except ValueError:
+                print("Entrada inválida. Se mantiene el año actual")
+                año_nuevo = años[idx]
+        else: año_nuevo = años[idx] # si se  presionó ENTER, mantener el valor actual
+
+        
+        # MODIFICAR MES
+        mes_nuevo = input(f"Nuevo mes (1-12) [{meses[idx]}]: ").strip()
+        if mes_nuevo != "":
+            try:
+                mes_nuevo = int(mes_nuevo)
+                if mes_nuevo < 1 or mes_nuevo > 12:
+                    print(f"Mes inválido. Se mantiene: {meses[idx]}")
+                    mes_nuevo = meses[idx]
+            except ValueError:
+                print("Entrada inválida. Se mantiene el mes actual")
+                mes_nuevo = meses[idx]
+        else: mes_nuevo = meses[idx]
+        
+        # MODIFICAR DÍA
+        dia_nuevo = input(f"Nuevo día [{dias[idx]}]: ").strip()
+        if dia_nuevo != "":
+            try:
+                dia_nuevo = int(dia_nuevo)
+                # obtener la cantidad de días del mes ingresado
+                num_dias_mes = calendar.monthrange(año_nuevo, mes_nuevo)[1]
+                # validar que el día sea válido para ese mes
+                if dia_nuevo < 1 or dia_nuevo > num_dias_mes:
+                    print(f"Día inválido. Se mantiene: {dias[idx]}")
+                    dia_nuevo = dias[idx]
+            except ValueError:
+                print("Entrada inválida. Se mantiene el día actual")
+                dia_nuevo = dias[idx]
+        else: dia_nuevo = dias[idx]
+        
+        # MODIFICAR CATEGORÍA
+        print("\nCategorías disponibles:")
+        # se obtiene las categorias unicas y ordenarlas
+        categorias_unicas = sorted(list(set(categorias)))
+        # muestra la lista numerada
+        for i, cat in enumerate(categorias_unicas, 1):
+            print(f"{i}. {cat}")
+        print(f"{len(categorias_unicas) + 1}. Crear nueva categoría")
+        print(f"{len(categorias_unicas) + 2}. Mantener actual ({categorias[idx]})")
+        
+        opcion_cat = input("\nElige una opción: ").strip()
+        if opcion_cat == "": categoria_nueva = categorias[idx] # si presiono ENTER sin escribir
+        else:
+            try:
+                opcion_cat = int(opcion_cat)
+                # si eligio una categoria existente
+                if 1 <= opcion_cat <= len(categorias_unicas):
+                    categoria_nueva = categorias_unicas[opcion_cat - 1]
+                    
+                # si eligio crear nueva categoria
+                elif opcion_cat == len(categorias_unicas) + 1:
+                    categoria_nueva = input("Nombre de la nueva categoría: ").strip().lower()
+                    if categoria_nueva == "":
+                        print("Categoría vacía. Se mantiene la actual")
+                        categoria_nueva = categorias[idx]
+                        
+                # si eligio mantener actual o cualquier otra opcion
+                else: categoria_nueva = categorias[idx]
+            except ValueError:
+                print("Entrada inválida. Se mantiene la categoría actual")
+                categoria_nueva = categorias[idx]
+        
+        # MODIFICAR PRECIO
+        precio_nuevo = input(f"Nuevo precio [${gastos[idx]:.2f}]: $").strip()
+        if precio_nuevo != "":
+            try:
+                precio_nuevo = float(precio_nuevo)
+                # validar que sea mayor que 0
+                if precio_nuevo <= 0:
+                    print("Precio inválido. Se mantiene el precio actual")
+                    precio_nuevo = gastos[idx]
+            except ValueError:
+                print("Entrada inválida. Se mantiene el precio actual")
+                precio_nuevo = gastos[idx]
+        else:
+            precio_nuevo = gastos[idx]
+        
+        # MODIFICAR DESCRIPCIÓN
+        descripcion_nueva = input(f"Nueva descripción [{descripciones[idx]}]: ").strip()
+        if descripcion_nueva == "":  # si se resiona ENTER, mantener la actual
+            descripcion_nueva = descripciones[idx]
+        
+        # MOSTRAR RESUMEN DE CAMBIOS
+        print("\n--RESUMEN DE CAMBIOS--")
+        print(f"Fecha: {dias[idx]:02d}/{meses[idx]:02d}/{años[idx]} -> {dia_nuevo:02d}/{mes_nuevo:02d}/{año_nuevo}")
+        print(f"Categoría: {categorias[idx]} -> {categoria_nueva}")
+        print(f"Precio: ${gastos[idx]:.2f} -> ${precio_nuevo:.2f}")
+        print(f"Descripción: {descripciones[idx]} -> {descripcion_nueva}")
+        
+        # CONFIRMAR Y APLICAR CAMBIOS
+        confirmar = input("\n¿Confirmar cambios? (s/n): ").lower().strip()
+        
+        if confirmar == 's':
+            # se aplican todos los cambios a las listas
+            años[idx] = año_nuevo
+            meses[idx] = mes_nuevo
+            dias[idx] = dia_nuevo
+            categorias[idx] = categoria_nueva
+            gastos[idx] = precio_nuevo
+            descripciones[idx] = descripcion_nueva
+            
+            print("\n- Gasto modificado exitosamente")
+            
+            guardar = input("¿Guardar cambios en archivo? (s/n): ").lower().strip()
+            if guardar == 's':
+                guardar_csv(gastos, dias, meses, años, categorias, descripciones)
+        else:
+            print("Cambios descartados")
+            
+    except ValueError:
+        print("Error: Entrada inválida")
 
 # diccionario util para graficar 
 nombres_meses = {1:"Enero", 2:"Febrero", 3:"Marzo", 4:"Abril", 5:"Mayo",
@@ -752,7 +951,8 @@ def main():
         print("\n--GESTIÓN DE DATOS--")
         print("6. Ver todos los gastos")
         print("7. Agregar nuevo/s gastos")
-        print("8. Eliminar un gasto")
+        print("8. Modificar un gasto")
+        print("9. Eliminar un gasto")
         
         print("\n9. Salir")
         print("="*55)
@@ -766,8 +966,9 @@ def main():
         elif opcion == "5": calculos_especificos(gastos, meses, años, categorias)
         elif opcion == "6": ver_gastos(gastos, dias, meses, años, categorias, descripciones)
         elif opcion == "7": menu_agregar_gastos(gastos, dias, meses, años, categorias, descripciones)
-        elif opcion == "8": eliminar_gasto(gastos, dias, meses, años, categorias, descripciones)
-        elif opcion == "9":
+        elif opcion == "8": modificar_gasto(gastos, dias, meses, años, categorias, descripciones)
+        elif opcion == "9": eliminar_gasto(gastos, dias, meses, años, categorias, descripciones)
+        elif opcion == "10":
             print("\nSaliendo del programa...")
             break
         else:
