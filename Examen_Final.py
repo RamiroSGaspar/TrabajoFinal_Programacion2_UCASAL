@@ -954,7 +954,7 @@ def main():
         print("8. Modificar un gasto")
         print("9. Eliminar un gasto")
         
-        print("\n9. Salir")
+        print("\n10. Salir")
         print("="*55)
         
         opcion = input("\nSelecciona una opción: ").strip()
